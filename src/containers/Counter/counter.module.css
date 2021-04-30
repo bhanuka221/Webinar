@@ -1,0 +1,24 @@
+.counter ul {
+  list-style: none;
+  margin: auto;
+  padding: 0;
+  width: 50vh;
+  margin-top: 1em;
+  border: 1px solid #eee;
+  box-shadow: 0 2px 2px 1px rgba(0, 0, 0, 0.5);
+}
+
+.counter li {
+  background-color: rgb(129, 163, 238);
+  margin: 2px;
+  color: white;
+  cursor: pointer;
+}
+
+.counter li:nth-child(2n + 1) {
+  background-color: rgb(90, 194, 194);
+}
+
+.counter li:hover {
+  background-color: rgb(155, 108, 22);
+}
