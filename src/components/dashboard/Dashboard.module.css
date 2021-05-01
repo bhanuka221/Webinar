@@ -1,0 +1,22 @@
+.container{
+    display:grid;
+    height:100vh;
+    grid-template-columns: 1fr;
+    grid-template-rows: 0.2fr 1.5fr 0.3fr;
+    grid-template-areas:
+      "nav"
+      "main"
+      "footer";
+    grid-gap:0.2rem;
+    text-align:center;
+    padding: 5px;
+  }
+  
+  nav,main,#sidebar,#content1,#content2,#content3,footer{
+    border:1px solid gray;
+  /*   margin:2px; */
+  }
+  
+  nav{ grid-area:nav;}
+  main{grid-area:main;}
+  footer{grid-area:footer}

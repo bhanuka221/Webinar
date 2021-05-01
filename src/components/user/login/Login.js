@@ -1,9 +1,11 @@
 import axios from "axios";
 import React, { Component } from "react";
 import classes from "./Login.module.css";
+import { connect } from "react-redux";
 import * as constants from "../../../util/constant";
+import * as actionTypes from "../../store/actions/index";
 
-export default class Login extends Component {
+class Login extends Component {
   state = {
     email: "",
     password: "",
@@ -24,9 +26,10 @@ export default class Login extends Component {
     };
 
     axios
-      .post( constants.BASE_URL + "/user/login", authData)
+      .post(constants.BASE_URL + "/user/login", authData)
       .then((response) => {
         console.log(response);
+        this.props.onSaveAuthData(response.data);
       })
       .catch((error) => {
         console.log("Error is : ", error.response);
@@ -75,3 +78,15 @@ export default class Login extends Component {
     );
   }
 }
+
+const mapStateToProps = (state) => {
+  return {};
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onSaveAuthData: (authData) => dispatch(actionTypes.saveAuthData(authData)),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

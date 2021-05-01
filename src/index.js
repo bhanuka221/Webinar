@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 import { combineReducers, createStore, applyMiddleware, compose } from "redux";
 import App from "./App";
-import ResultReducer from "./components/store/reducers/result";
+import AuthReducer from "./components/store/reducers/auth";
 import "./index.css";
 import registerServiceWorker from "./registerServiceWorker";
 import thunk from "redux-thunk";
@@ -11,7 +11,7 @@ import thunk from "redux-thunk";
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 const rootReducer = combineReducers({
-  rslt: ResultReducer,
+  auth: AuthReducer,
 });
 
 const store = createStore(rootReducer, composeEnhancers(applyMiddleware(thunk)));

@@ -1,4 +1,4 @@
-export const INCREMENT = "INC";
+export const AUTH_DATA = "AUTH_DATA";
 export const DECREMENT = "DEC";
 export const ADD = "ADD";
 export const SUBSTRACT = "SUB";
