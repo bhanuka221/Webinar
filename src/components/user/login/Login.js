@@ -1,12 +1,44 @@
+import axios from "axios";
 import React, { Component } from "react";
 import classes from "./Login.module.css";
-import { Form, Button } from "react-bootstrap";
+import * as constants from "../../../util/constant";
 
 export default class Login extends Component {
+  state = {
+    email: "",
+    password: "",
+  };
+
+  formOnChangeHandler = (e) => {
+    this.setState({
+      [e.target.id]: e.target.value,
+    });
+  };
+
+  onSubmitHandler = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const authData = {
+      email: this.state.email,
+      password: this.state.password,
+    };
+
+    axios
+      .post( constants.BASE_URL + "/user/login", authData)
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((error) => {
+        console.log("Error is : ", error.response);
+      });
+  };
+
   render() {
+    const { email, password } = this.state;
+
     return (
       <div className={classes.login}>
-        <form>
+        <form onSubmit={(e) => this.onSubmitHandler(e)}>
           <div class="mb-3">
             <label className={classes.header}>Sign In</label>
             <label for="exampleInputEmail1" className="form-label">
@@ -15,8 +47,10 @@ export default class Login extends Component {
             <input
               type="email"
               class="form-control"
-              id="exampleInputEmail1"
+              id="email"
               aria-describedby="emailHelp"
+              value={email}
+              onChange={(e) => this.formOnChangeHandler(e)}
             />
 
             <div class="mb-3">
@@ -26,7 +60,9 @@ export default class Login extends Component {
               <input
                 type="password"
                 class="form-control"
-                id="exampleInputPassword1"
+                id="password"
+                value={password}
+                onChange={(e) => this.formOnChangeHandler(e)}
               />
             </div>
 
