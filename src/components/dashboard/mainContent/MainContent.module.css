@@ -1,0 +1,28 @@
+.postCard{
+    width: 75%;
+    height: 75%;
+    margin: auto;
+    margin-top: 4%;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    padding: 5px;
+    background-color: rgba(245, 244, 250, 0.911);
+}
+
+.postHeader{
+    width: 75%;
+    height: 15%;
+    background-color: rgb(39, 39, 73);
+    margin: auto;
+}
+
+.postHeader button{
+    font-size: small;
+    margin-top: 8px;
+}
+
+.postContent{
+    width: 90%;
+    margin: auto;
+    margin-top: 2%;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+}
