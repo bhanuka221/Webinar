@@ -7,8 +7,8 @@ export default class Dashboard extends Component {
   render() {
     return (
       <div className={classes.container}>
-        <NavBar />
-        <MainContent />
+        <NavBar history={this.props.history} />
+        <MainContent history={this.props.history} />
         <footer></footer>
       </div>
     );

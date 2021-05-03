@@ -1,6 +1,7 @@
 const express = require("express");
 const multer = require("multer");
 const Post = require("../models/post");
+const checkAuth = require("../middleware/check-auth");
 
 const router = express.Router();
 
@@ -24,6 +25,7 @@ const storage = multer.diskStorage({
 // Use POST request
 router.post(
   "/post",
+  checkAuth,
   multer({ storage: storage }).single("image"),
   (req, res, next) => {
     const url = req.protocol + "://" + req.get("host");
@@ -52,7 +54,7 @@ router.post(
 );
 
 // Delete post
-router.delete("/post/:id", (req, res, next) => {
+router.delete("/post/:id",checkAuth, (req, res, next) => {
   Post.deleteOne({ _id: req.params.id }).then((result) => {
     console.log(result);
   });
@@ -64,6 +66,7 @@ router.delete("/post/:id", (req, res, next) => {
 // Update post
 router.put(
   "/post/:id",
+  checkAuth,
   multer({ storage: storage }).single("image"),
   (req, res, next) => {
     let imagePath = req.body.imagePath;
@@ -82,7 +85,9 @@ router.put(
       userId: req.body.userId,
     });
 
-    Post.findOneAndUpdate({ _id: req.body._id }, updatedPost, { new: true }).then((updatedPost) => {
+    Post.findOneAndUpdate({ _id: req.body._id }, updatedPost, {
+      new: true,
+    }).then((updatedPost) => {
       console.log(updatedPost);
       res.status("200").json({
         message: "Post Updated Successfully!",

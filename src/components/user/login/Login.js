@@ -30,6 +30,7 @@ class Login extends Component {
       .then((response) => {
         console.log(response);
         this.props.onSaveAuthData(response.data);
+        this.props.history.push("/api");
       })
       .catch((error) => {
         console.log("Error is : ", error.response);

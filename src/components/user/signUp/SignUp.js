@@ -1,10 +1,10 @@
 import axios from "axios";
 import React, { Component } from "react";
-import classes from "./SignIn.module.css";
+import classes from "./SignUp.module.css";
 import * as constants from "../../../util/constant";
 import * as formValidation from "../../../util/formValidation";
 
-export default class SignIn extends Component {
+export default class SignUp extends Component {
   state = {
     name: "",
     email: "",
@@ -49,6 +49,7 @@ export default class SignIn extends Component {
     axios
       .post(constants.BASE_URL + "/user/signUp", userData)
       .then((response) => {
+        this.props.history.push("/api/login");
         console.log(response);
       })
       .catch((error) => {
