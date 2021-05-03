@@ -23,7 +23,7 @@ const storage = multer.diskStorage({
 
 // Use POST request
 router.post(
-  "",
+  "/post",
   multer({ storage: storage }).single("image"),
   (req, res, next) => {
     const url = req.protocol + "://" + req.get("host");
@@ -31,7 +31,7 @@ router.post(
       title: req.body.title,
       date: req.body.date,
       userId: req.body.userId,
-      imagePath: url +"/images/" + req.file.filename
+      imagePath: url + "/images/" + req.file.filename,
     });
 
     post
@@ -52,7 +52,7 @@ router.post(
 );
 
 // Delete post
-router.delete("/:id", (req, res, next) => {
+router.delete("/post/:id", (req, res, next) => {
   Post.deleteOne({ _id: req.params.id }).then((result) => {
     console.log(result);
   });
@@ -62,23 +62,38 @@ router.delete("/:id", (req, res, next) => {
 });
 
 // Update post
-router.put("", (req, res, next) => {
-  const updatedPost = new Post({
-    _id: req.body.id,
-    title: req.body.title,
-    content: req.body.content,
-  });
+router.put(
+  "/post/:id",
+  multer({ storage: storage }).single("image"),
+  (req, res, next) => {
+    let imagePath = req.body.imagePath;
 
-  Post.updateOne({ _id: req.body.id }, updatedPost).then((result) => {
-    console.log(result);
-    res.status("200").json({
-      message: "Updated Successfully !",
+    if (req.file) {
+      const url = req.protocol + "://" + req.get("host");
+      imagePath = url + "/images/" + req.file.filename;
+      console.log(req.body._id);
+    }
+
+    const updatedPost = new Post({
+      _id: req.body._id,
+      title: req.body.title,
+      date: req.body.date,
+      imagePath: imagePath,
+      userId: req.body.userId,
     });
-  });
-});
+
+    Post.findOneAndUpdate({ _id: req.body._id }, updatedPost, { new: true }).then((updatedPost) => {
+      console.log(updatedPost);
+      res.status("200").json({
+        message: "Post Updated Successfully!",
+        post: updatedPost,
+      });
+    });
+  }
+);
 
 // get a post by id
-router.get("/:id", (req, res, next) => {
+router.get("/post/:id", (req, res, next) => {
   Post.findById(req.params.id).then((post) => {
     if (post) {
       res.status("200").json({

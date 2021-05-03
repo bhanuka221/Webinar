@@ -6,6 +6,10 @@ class Post extends Component {
     this.props.onDeletePost(postId);
   };
 
+  onEditPostHandler = (post) => {
+    this.props.onEditPost(post);
+  };
+
   renderPosts = () => {
     const posts = this.props.posts;
     if (posts && posts.length > 0) {
@@ -53,8 +57,16 @@ class Post extends Component {
                 </div>
                 <div class="accordion-body">
                   <div className={"mb-3 "}>
-                    <button>edit</button>
-                    <button onClick={() => this.onDeletePostHandler(post._id)}>delete</button>
+                    <button
+                      onClick={() => this.onEditPostHandler(post)}
+                      data-bs-toggle="modal"
+                      data-bs-target="#exampleModal"
+                    >
+                      edit
+                    </button>
+                    <button onClick={() => this.onDeletePostHandler(post._id)}>
+                      delete
+                    </button>
                   </div>
                 </div>
               </div>

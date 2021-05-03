@@ -27,7 +27,7 @@ class MainContent extends Component {
 
   onDeletePost = (postId) => {
     axios
-      .delete(constants.BASE_URL + "/" + postId)
+      .delete(constants.BASE_URL + "/post/" + postId)
       .then((response) => {
         this.setState({
           ...this.state,
@@ -40,6 +40,12 @@ class MainContent extends Component {
       });
   };
 
+  onEditPost = (post) => {
+    this.setState({
+      selectedPost: post,
+    });
+  };
+
   onSavePost = (postData) => {
     const data = new FormData();
     data.append("title", postData.title);
@@ -48,7 +54,7 @@ class MainContent extends Component {
     data.append("userId", "608c2435909bca5c8d23b665");
 
     axios
-      .post(constants.BASE_URL, data)
+      .post(constants.BASE_URL + "/post/", data)
       .then((response) => {
         this.setState({
           ...this.state,
@@ -58,6 +64,45 @@ class MainContent extends Component {
       .catch((error) => {
         console.log(error.response);
       });
+  };
+
+  onUpdatePost = (post) => {
+    let data;
+    if (post.chooseImagePath) {
+      data = {
+        ...post,
+        userId: "608c2435909bca5c8d23b665",
+      };
+    } else {
+      data = new FormData();
+      data.append("_id", post._id);
+      data.append("title", post.title);
+      data.append("date", post.date);
+      data.append("image", post.image, post.title);
+      data.append("userId", "608c2435909bca5c8d23b665");
+    }
+    axios
+      .put(constants.BASE_URL + "/post/" + post._id, data)
+      .then((response) => {
+        let updatedPosts = [...this.state.posts];
+        let indexToUpdate = updatedPosts.findIndex((p) => post._id === p._id);
+        console.log(response.data);
+        updatedPosts[indexToUpdate] = response.data.post;
+        this.setState({
+          ...this.state,
+          posts: updatedPosts,
+        });
+      })
+      .catch((error) => {
+        console.log(error.response.data);
+      });
+  };
+
+  onAddPostHandler = () => {
+    this.setState({
+      ...this.state,
+      selectedPost: {},
+    });
   };
 
   render() {
@@ -70,16 +115,22 @@ class MainContent extends Component {
               class="btn btn-outline-light"
               data-bs-toggle="modal"
               data-bs-target="#exampleModal"
+              onClick={this.onAddPostHandler}
             >
               Add Post
             </button>
           </div>
           <div className={classes.postContent}>
-            <Post posts={this.state.posts} onDeletePost={this.onDeletePost} />
+            <Post
+              posts={this.state.posts}
+              onDeletePost={this.onDeletePost}
+              onEditPost={this.onEditPost}
+            />
           </div>
         </div>
         <PostModel
           onSavePost={this.onSavePost}
+          onUpdatePost={this.onUpdatePost}
           post={this.state.selectedPost}
         />
       </main>
