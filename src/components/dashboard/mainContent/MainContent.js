@@ -4,6 +4,8 @@ import * as constants from "../../../util/constant";
 import classes from "./MainContent.module.css";
 import PostModel from "./PostModel";
 import Post from "./posts/Post";
+import { connect } from "react-redux";
+
 
 class MainContent extends Component {
   state = {
@@ -138,4 +140,16 @@ class MainContent extends Component {
   }
 }
 
-export default MainContent;
+const mapStateToProps = (state) => {
+  return {
+    accessToken: state.auth.auth.token,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    // onSaveAuthData: (authData) => dispatch(actionTypes.saveAuthData(authData)),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(MainContent);

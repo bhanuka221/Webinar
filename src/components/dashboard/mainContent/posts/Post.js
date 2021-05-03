@@ -15,8 +15,8 @@ class Post extends Component {
     if (posts && posts.length > 0) {
       return posts.map((post) => {
         return (
-          <div class="accordion accordion-flush" id="accordionFlushExample">
-            <div class="accordion-item" key={post._id}>
+          <div class="accordion accordion-flush" id="accordionFlushExample" key={post._id}>
+            <div class="accordion-item" >
               <h2 class="accordion-header" id="flush-headingOne">
                 <button
                   class="accordion-button collapsed"

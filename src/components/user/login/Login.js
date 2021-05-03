@@ -4,6 +4,7 @@ import classes from "./Login.module.css";
 import { connect } from "react-redux";
 import * as constants from "../../../util/constant";
 import * as actionTypes from "../../store/actions/index";
+import { saveAuthDataOnLocalStorage } from "../../../util/helper";
 
 class Login extends Component {
   state = {
@@ -31,6 +32,7 @@ class Login extends Component {
         console.log(response);
         this.props.onSaveAuthData(response.data);
         this.props.history.push("/api");
+        saveAuthDataOnLocalStorage(response.data);
       })
       .catch((error) => {
         console.log("Error is : ", error.response);
