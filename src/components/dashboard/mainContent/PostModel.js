@@ -95,7 +95,7 @@ export default class PostModel extends Component {
       }
     } else {
       return (
-        <div className={"mb-3 " + classes.imagePreview}>
+        <div className="mb-3">
           {/* <label style={{display:"inline-block"}}>Image</label> */}
           <img src={this.state.imagePath} alt="" />
         </div>
@@ -267,7 +267,7 @@ export default class PostModel extends Component {
                     />
                   </div>
 
-                  <div className="mb-3">
+                  <div className={"mb-3 "+classes.imageContainer}>
                     {/* <label for="exampleInputPassword1" className="form-label">
                       Choose Event Image :
                     </label> */}

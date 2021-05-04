@@ -6,10 +6,23 @@ const postsRouter = require("./routes/posts");
 const userRouter = require("./routes/user");
 
 const app = express();
+// mongodb+srv://bhanuka152:<password>@cluster0.qa54n.mongodb.net/myFirstDatabase?retryWrites=true&w=majority
 
 // Conecting to MongoDB
+// mongoose
+//   .connect("mongodb://localhost:27017/webinar", {
+//     useNewUrlParser: true,
+//     useUnifiedTopology: true,
+//   })
+//   .then(() => {
+//     console.log("Connected to database");
+//   })
+//   .catch(() => {
+//     console.log("Error occured when connecting to DB");
+//   });
+
 mongoose
-  .connect("mongodb://localhost:27017/webinar", {
+  .connect("mongodb+srv://bhanuka152:bepositive.@cluster0.qa54n.mongodb.net/myFirstDatabase?retryWrites=true&w=majority", {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })

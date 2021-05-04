@@ -3,6 +3,7 @@
     margin: 1rem 0;
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.8);
     padding: 5px;
+    text-align: center;
 }
 
 .imagePreview img{

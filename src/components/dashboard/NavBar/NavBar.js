@@ -41,7 +41,7 @@ export default class NavBar extends Component {
                 Sign-up
               </button>}
               
-              {this.props.accessToken && <button
+              {/* {this.props.accessToken && <button
                 button
                 type="button"
                 class="btn btn-outline-light"
@@ -50,7 +50,7 @@ export default class NavBar extends Component {
                 // }}
               >
                 Settings
-              </button> }
+              </button> } */}
 
               
 
