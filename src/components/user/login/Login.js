@@ -127,6 +127,10 @@ class Login extends Component {
                 />
               </div>
 
+              <label className={classes.forgetPassword} onClick={() => {
+                this.props.history.push("/api/forgetPassword");
+              }}>Forget password</label>
+
               <div style={{ display: "flex", justifyContent: "center" }}>
                 <button type="submit" className="btn btn-primary">
                   Sign-In

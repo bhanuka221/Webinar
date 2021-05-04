@@ -8,6 +8,8 @@ import SignUp from "./components/user/signUp/SignUp";
 import { getAuthDataFromLocalStorage } from "./util/helper";
 import * as actionTypes from "./components/store/actions/index";
 import axios from "axios";
+import ForgetPassword from "./components/user/passwordChanges/forgetPassword/ForgetPassword";
+import ResetPassword from "./components/user/passwordChanges/resetPassword/ResetPassword";
 
 class App extends Component {
   componentDidMount() {
@@ -28,9 +30,19 @@ class App extends Component {
       <BrowserRouter>
         <div className="App">
           <Switch>
-            <Route path="/api/login" component={Login} />
-            <Route path="/api/signUp" component={SignUp} />
-            <Route path="/api" component={Dashboard} />
+            <Route
+              exact
+              path="/api/forgetPassword"
+              component={ForgetPassword}
+            />
+            <Route
+              exact
+              path="/api/resetPassword/:token"
+              component={ResetPassword}
+            />
+            <Route exact path="/api/login" component={Login} />
+            <Route exact path="/api/signUp" component={SignUp} />
+            <Route exact path="/api" component={Dashboard} />
             <Redirect from="/" to="/api" />
             <Route render={() => <h1>Page Not Found</h1>} />
           </Switch>

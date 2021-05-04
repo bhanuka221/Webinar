@@ -40,3 +40,14 @@
 .container > *{
     color: white;
 }
+
+.forgetPassword{
+    color: rgba(30, 129, 211, 0.842);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    cursor: pointer;
+}
+
+.forgetPassword:hover{
+    color: rgba(11, 71, 121, 0.842);
+}
