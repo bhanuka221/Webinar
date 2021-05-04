@@ -32,7 +32,7 @@ router.post(
     const post = new Post({
       title: req.body.title,
       date: req.body.date,
-      userId: req.body.userId,
+      userId: req.decodedUserData.userId,
       imagePath: url + "/images/" + req.file.filename,
     });
 
@@ -82,7 +82,7 @@ router.put(
       title: req.body.title,
       date: req.body.date,
       imagePath: imagePath,
-      userId: req.body.userId,
+      userId: req.decodedUserData.userId,
     });
 
     Post.findOneAndUpdate({ _id: req.body._id }, updatedPost, {

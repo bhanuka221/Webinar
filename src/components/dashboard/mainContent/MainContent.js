@@ -35,7 +35,6 @@ class MainContent extends Component {
           ...this.state,
           posts: this.state.posts.filter((post) => post._id !== postId),
         });
-        console.log(response.data);
       })
       .catch((error) => {
         console.log(error);
@@ -53,7 +52,6 @@ class MainContent extends Component {
     data.append("title", postData.title);
     data.append("date", postData.date);
     data.append("image", postData.image, postData.title);
-    data.append("userId", "608c2435909bca5c8d23b665");
 
     axios
       .post(constants.BASE_URL + "/post/", data)
@@ -62,6 +60,7 @@ class MainContent extends Component {
           ...this.state,
           posts: this.state.posts.concat(response.data.post),
         });
+        console.log(response.data);
       })
       .catch((error) => {
         console.log(error.response);
@@ -73,7 +72,6 @@ class MainContent extends Component {
     if (post.chooseImagePath) {
       data = {
         ...post,
-        userId: "608c2435909bca5c8d23b665",
       };
     } else {
       data = new FormData();
@@ -81,7 +79,6 @@ class MainContent extends Component {
       data.append("title", post.title);
       data.append("date", post.date);
       data.append("image", post.image, post.title);
-      data.append("userId", "608c2435909bca5c8d23b665");
     }
     axios
       .put(constants.BASE_URL + "/post/" + post._id, data)
