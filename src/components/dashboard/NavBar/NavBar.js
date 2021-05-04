@@ -20,25 +20,41 @@ export default class NavBar extends Component {
     return (
       <nav class="navbar navbar-dark bg-primary">
         <div className={classes.container}>
-          <label>Webinar</label>
+          <span className={classes.webinar}>Webinar</span>
+          <span className={classes.leftSpan}>
           <button
-            button
-            type="button"
-            class="btn btn-outline-light"
-            onClick={this.onLogHandler}
-          >
-            {this.getLogName()}
-          </button>
-          <button
-            button
-            type="button"
-            class="btn btn-outline-light"
-            onClick={() => {
-              this.props.history.push("/api/signUp");
-            }}
-          >
-            Sign-up
-          </button>
+                button
+                type="button"
+                class="btn btn-outline-light"
+                onClick={this.onLogHandler}
+              >
+                {this.getLogName()}
+              </button>
+              {!this.props.accessToken && <button
+                button
+                type="button"
+                class="btn btn-outline-light"
+                onClick={() => {
+                  this.props.history.push("/api/signUp");
+                }}
+              >
+                Sign-up
+              </button>}
+              
+              {this.props.accessToken && <button
+                button
+                type="button"
+                class="btn btn-outline-light"
+                // onClick={() => {
+                //   this.props.history.push("/api/signUp");
+                // }}
+              >
+                Settings
+              </button> }
+
+              
+
+          </span>
         </div>
       </nav>
     );

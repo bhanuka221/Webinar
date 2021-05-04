@@ -4,6 +4,7 @@ import Datetime from "react-datetime";
 import moment from "moment";
 import classes from "./PostModel.module.css";
 import * as constants from "../../../util/constant";
+import * as formValidation from "../../../util/formValidation";
 
 export default class PostModel extends Component {
   state = {
@@ -14,6 +15,7 @@ export default class PostModel extends Component {
     modelState: "",
     imagePath: "",
     chooseImagePath: false,
+    validForm: false,
   };
 
   modelClose = false;
@@ -112,14 +114,37 @@ export default class PostModel extends Component {
         value = e.format("YYYY-MM-DD HH:mm");
         break;
       case "image":
-        value = e.target.files[0];
-        this.imageReader(value);
+        if (e.target.files[0]) {
+          value = e.target.files[0];
+          this.imageReader(value);
+        }
         break;
     }
 
     this.setState({
+      ...this.state,
       [key]: value,
+      validForm: this.isValidForm(key, value),
     });
+  };
+
+  isValidForm = (currentKey, currentValue) => {
+    let stateCopy = { ...this.state };
+    stateCopy[currentKey] = currentValue;
+    if (formValidation.isEmpty(stateCopy["title"])) {
+      return false;
+    }
+    if (formValidation.isEmpty(stateCopy["date"])) {
+      return false;
+    }
+    if (
+      formValidation.isEmpty(stateCopy["imagePath"]) &&
+      stateCopy["image"] === ""
+    ) {
+      return false;
+    }
+
+    return true;
   };
 
   onSaveHandler = () => {
@@ -135,7 +160,14 @@ export default class PostModel extends Component {
   };
 
   onUpdatePostHandler = () => {
-    const { title, date, image, imagePath, chooseImagePath } = this.state;
+    const {
+      title,
+      date,
+      image,
+      imagePath,
+      chooseImagePath,
+      validForm,
+    } = this.state;
     let data = {
       _id: this.props.post._id,
       title: title,
@@ -177,7 +209,7 @@ export default class PostModel extends Component {
   };
 
   render() {
-    const { title, date, modelState } = this.state;
+    const { title, date, modelState, validForm } = this.state;
 
     return (
       <div>
@@ -194,10 +226,10 @@ export default class PostModel extends Component {
             <div class="modal-content">
               <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">
-                  Modal title
+                  {modelState === constants.NEW ? "Add Post" : "Edit Post"}
                 </h5>
               </div>
-              <div class="modal-body">
+              <div class={`modal-body ${classes.modelBody}`}>
                 <form onSubmit={(event) => this.onSubmitHandler(event)}>
                   {/* <div className="mb-3"> */}
                   {/* <label className={classes.header}>Sign Up</label> */}
@@ -271,7 +303,10 @@ export default class PostModel extends Component {
                   data-bs-dismiss="modal"
                   onClick={this.onCloseHandler}
                   data-bs-toggle="collapse"
-                  data-bs-target={this.props.post._id && "#flush-collapseOne" + this.props.post._id}
+                  data-bs-target={
+                    this.props.post._id &&
+                    "#flush-collapseOne" + this.props.post._id
+                  }
                 >
                   Close
                 </button>
@@ -285,7 +320,11 @@ export default class PostModel extends Component {
                   }
                   data-bs-dismiss="modal"
                   data-bs-toggle="collapse"
-                  data-bs-target={this.props.post._id && "#flush-collapseOne" + this.props.post._id}
+                  data-bs-target={
+                    this.props.post._id &&
+                    "#flush-collapseOne" + this.props.post._id
+                  }
+                  disabled={!validForm}
                 >
                   Save changes
                 </button>

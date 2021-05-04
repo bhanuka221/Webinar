@@ -25,3 +25,35 @@
     color: rgb(218, 37, 37) ;
     font-weight: bold;
 }
+
+.container{
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px 20px;
+}
+
+.webinar{
+    font-size: x-large;
+}
+
+.webinar:hover{
+    cursor: pointer;
+    color: darksalmon;
+}
+
+.container > *{
+    color: white;
+}
+
+.required label::after {
+    color: #e32;
+    content: ' *';
+    display:inline;
+}
+
+.signUpBtn{
+    display: flex;
+    justify-content: center;
+}

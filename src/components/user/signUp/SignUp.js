@@ -1,8 +1,9 @@
 import axios from "axios";
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import classes from "./SignUp.module.css";
 import * as constants from "../../../util/constant";
 import * as formValidation from "../../../util/formValidation";
+import SweetAlert from "react-bootstrap-sweetalert";
 
 export default class SignUp extends Component {
   state = {
@@ -34,7 +35,25 @@ export default class SignUp extends Component {
         isTouched: false,
       },
     },
+    showAlert: false,
+    alertTiltle: "",
+    alertType: "",
   };
+
+  renderTopBar = () => (
+    <nav class="navbar navbar-dark bg-primary">
+      <div className={classes.container}>
+        <span
+          className={classes.webinar}
+          onClick={() => {
+            this.props.history.push("/api");
+          }}
+        >
+          Webinar
+        </span>
+      </div>
+    </nav>
+  );
 
   onSubmitHandler = (event) => {
     event.preventDefault();
@@ -49,11 +68,22 @@ export default class SignUp extends Component {
     axios
       .post(constants.BASE_URL + "/user/signUp", userData)
       .then((response) => {
-        this.props.history.push("/api/login");
-        console.log(response);
+        this.setState({
+          ...this.state,
+          showAlert: true,
+          alertTiltle: response.data.message,
+          alertType: constants.SUCCESS,
+        });
       })
       .catch((error) => {
-        console.log("Error is : ", error.response);
+        if (error.response) {
+          this.setState({
+            ...this.state,
+            showAlert: true,
+            alertTiltle: error.response.data.message,
+            alertType: constants.ERROR,
+          });
+        }
       });
   };
 
@@ -121,7 +151,10 @@ export default class SignUp extends Component {
         }
         break;
       case "reEnterPassowrd":
-        if (!formValidation.passwordMatches(this.state.password,value) && isTouched) {
+        if (
+          !formValidation.passwordMatches(this.state.password, value) &&
+          isTouched
+        ) {
           validForm = false;
           errorMessages.reEnterPassowrd = "Passwords are not same";
         }
@@ -193,127 +226,168 @@ export default class SignUp extends Component {
     }
   };
 
+  alertTimeOut = () => {
+    setTimeout(() => {
+      this.setState({ ...this.state, showAlert: false });
+      if (this.state.alertType === constants.SUCCESS) {
+        this.props.history.push("/api/login");
+      }
+    }, 3000);
+  };
+
+  renderAlert = () => {
+    if (this.state.showAlert) {
+      return (
+        <SweetAlert
+          type={this.state.alertType}
+          title={this.state.alertTiltle}
+          onConfirm={this.alertTimeOut()}
+          show={this.state.showAlert}
+          confirmBtnStyle={{ display: "none" }}
+        />
+      );
+    }
+    return null;
+  };
+
   getCssClasses = (...arr) => {
     return arr.join(" ");
   };
 
   render() {
-    const { name, email, mobileNumber, password, reEnterPassowrd, validForm } = this.state;
+    const {
+      name,
+      email,
+      mobileNumber,
+      password,
+      reEnterPassowrd,
+      validForm,
+    } = this.state;
     const error = this.state.error;
 
     return (
-      <div className={classes.signIn}>
-        <form onSubmit={(event) => this.onSubmitHandler(event)}>
-          <div className="mb-3">
-            <label className={classes.header}>Sign Up</label>
-
+      <Fragment>
+        {this.renderTopBar()}
+        {this.renderAlert()}
+        <div className={classes.signIn}>
+          <form onSubmit={(event) => this.onSubmitHandler(event)}>
             <div className="mb-3">
-              <label for="exampleInputPassword1" className="form-label">
-                Name
-              </label>
-              <input
-                type="text"
-                className={
-                  formValidation.isEmpty(error["name"].value)
-                    ? "form-control"
-                    : this.getCssClasses("form-control", classes.error)
-                }
-                id="name"
-                value={name}
-                onChange={(event) => {
-                  this.formOnChangeHandler(event);
-                }}
-              />
-              {this.renderInvalid("name")}
-            </div>
+              <label className={classes.header}>Sign Up</label>
+              <div className={classes.required}>
+                <div className="mb-3">
+                  <label for="exampleInputPassword1" className="form-label">
+                    Name
+                  </label>
+                  <input
+                    type="text"
+                    className={
+                      formValidation.isEmpty(error["name"].value)
+                        ? "form-control"
+                        : this.getCssClasses("form-control", classes.error)
+                    }
+                    id="name"
+                    value={name}
+                    onChange={(event) => {
+                      this.formOnChangeHandler(event);
+                    }}
+                  />
+                  {this.renderInvalid("name")}
+                </div>
 
-            <div className="mb-3">
-              <label for="exampleInputEmail1" className="form-label">
-                Email address
-              </label>
-              <input
-                type="email"
-                className={
-                  formValidation.isEmpty(error["email"].value)
-                    ? "form-control"
-                    : this.getCssClasses("form-control", classes.error)
-                }
-                id="email"
-                value={email}
-                aria-describedby="emailHelp"
-                onChange={(event) => {
-                  this.formOnChangeHandler(event);
-                }}
-              />
-              {this.renderInvalid("email")}
-            </div>
+                <div className="mb-3">
+                  <label for="exampleInputEmail1" className="form-label">
+                    Email address
+                  </label>
+                  <input
+                    type="email"
+                    className={
+                      formValidation.isEmpty(error["email"].value)
+                        ? "form-control"
+                        : this.getCssClasses("form-control", classes.error)
+                    }
+                    id="email"
+                    value={email}
+                    aria-describedby="emailHelp"
+                    onChange={(event) => {
+                      this.formOnChangeHandler(event);
+                    }}
+                  />
+                  {this.renderInvalid("email")}
+                </div>
 
-            <div className="mb-3">
-              <label for="mobileNumber" className="form-label">
-                Mobile Number
-              </label>
-              <input
-                type="text"
-                className={
-                  formValidation.isEmpty(error["mobileNumber"].value)
-                    ? "form-control"
-                    : this.getCssClasses("form-control", classes.error)
-                }
-                id="mobileNumber"
-                value={mobileNumber}
-                onChange={(event) => {
-                  this.formOnChangeHandler(event);
-                }}
-              />
-              {this.renderInvalid("mobileNumber")}
-            </div>
+                <div className="mb-3">
+                  <label for="mobileNumber" className="form-label">
+                    Mobile Number
+                  </label>
+                  <input
+                    type="text"
+                    className={
+                      formValidation.isEmpty(error["mobileNumber"].value)
+                        ? "form-control"
+                        : this.getCssClasses("form-control", classes.error)
+                    }
+                    id="mobileNumber"
+                    value={mobileNumber}
+                    onChange={(event) => {
+                      this.formOnChangeHandler(event);
+                    }}
+                  />
+                  {this.renderInvalid("mobileNumber")}
+                </div>
 
-            <div className="mb-3">
-              <label for="exampleInputPassword1" className="form-label">
-                Password
-              </label>
-              <input
-                type="password"
-                className={
-                  formValidation.isEmpty(error["password"].value)
-                    ? "form-control"
-                    : this.getCssClasses("form-control", classes.error)
-                }
-                id="password"
-                value={password}
-                onChange={(event) => {
-                  this.formOnChangeHandler(event);
-                }}
-              />
-              {this.renderInvalid("password")}
-            </div>
+                <div className="mb-3">
+                  <label for="exampleInputPassword1" className="form-label">
+                    Password
+                  </label>
+                  <input
+                    type="password"
+                    className={
+                      formValidation.isEmpty(error["password"].value)
+                        ? "form-control"
+                        : this.getCssClasses("form-control", classes.error)
+                    }
+                    id="password"
+                    value={password}
+                    onChange={(event) => {
+                      this.formOnChangeHandler(event);
+                    }}
+                  />
+                  {this.renderInvalid("password")}
+                </div>
 
-            <div className="mb-3">
-              <label for="reEnter" className="form-label">
-                Confirm Password
-              </label>
-              <input
-                type="password"
-                className={
-                  formValidation.isEmpty(error["reEnterPassowrd"].value)
-                    ? "form-control"
-                    : this.getCssClasses("form-control", classes.error)
-                }
-                id="reEnterPassowrd"
-                value={reEnterPassowrd}
-                onChange={(event) => {
-                  this.formOnChangeHandler(event);
-                }}
-              />
-              {this.renderInvalid("reEnterPassowrd")}
+                <div className="mb-3">
+                  <label for="reEnter" className="form-label">
+                    Confirm Password
+                  </label>
+                  <input
+                    type="password"
+                    className={
+                      formValidation.isEmpty(error["reEnterPassowrd"].value)
+                        ? "form-control"
+                        : this.getCssClasses("form-control", classes.error)
+                    }
+                    id="reEnterPassowrd"
+                    value={reEnterPassowrd}
+                    onChange={(event) => {
+                      this.formOnChangeHandler(event);
+                    }}
+                  />
+                  {this.renderInvalid("reEnterPassowrd")}
+                </div>
+                <div className={classes.signUpBtn}>
+                  <button
+                    type="submit"
+                    className="btn btn-primary"
+                    disabled={!validForm}
+                  >
+                    Sign-Up
+                  </button>
+                </div>
+              </div>
             </div>
-
-            <button type="submit" className="btn btn-primary" disabled={!validForm}>
-              Submit
-            </button>
-          </div>
-        </form>
-      </div>
+          </form>
+        </div>
+      </Fragment>
     );
   }
 }

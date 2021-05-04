@@ -6,8 +6,18 @@
     padding: 5px 20px;
 }
 
-.container button{
+.leftSpan button{
+    margin-left: 5px;
+    font-size: 0.8em; 
+}
 
+.webinar{
+    font-size: x-large;
+}
+
+.webinar:hover{
+    cursor: pointer;
+    color: darksalmon;
 }
 
 .container > *{

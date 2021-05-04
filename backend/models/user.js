@@ -7,6 +7,7 @@ const userSchema = mongoose.Schema({
   mobileNumber: { type: String, required: true },
   password: { type: String, required: true },
   role: { type: String, required: true },
+  forgetPasswordToken: { type: String, default: "" },
 });
 
 userSchema.plugin(uniqueValidator);

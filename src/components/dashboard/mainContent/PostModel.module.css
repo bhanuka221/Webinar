@@ -9,3 +9,18 @@
     height:100%;
     max-width: 100%;
 }
+
+.modelBody{
+    text-align: left;
+}
+ 
+.modelBody label{
+    font-weight: bold;
+}
+
+.modelBody label::after{
+    color: #e32;
+    content: ' *';
+    display:inline;
+    font-weight: normal;
+}
